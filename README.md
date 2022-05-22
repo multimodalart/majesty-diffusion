@@ -26,6 +26,7 @@ A [Dango233](https://github.com/Dango233) and [apolinario (@multimodalart)](http
   - Added [dmarx](https://github.com/dmarx/) [Multi-Modal-Comparators](https://github.com/dmarx/Multi-Modal-Comparators) for CLIP and CLIP-like models
   - Added [open_clip](https://github.com/mlfoundations/open_clip) gradient caching
   - Added [crowsonkb](https://github.com/crowsonkb/v-diffusion-pytorch) aesthetic models
+  - Added [LAION-AI](https://github.com/LAION-AI/aesthetic-predictor) aesthetic predictor embeddings
   - Added Dango233 inpainting mode
   - Added multimodalart savable settings and setting library (including `colab-free-default`, `dango233-princess`, `the-other-zippy` shared settings. Share yours with us!)
 
@@ -42,6 +43,7 @@ A [Dango233](https://github.com/Dango233) and [apolinario (@multimodalart)](http
   - Added [nshepperd](https://github.com/nshepperd) v-diffusion imagenet512 and danbooru models
   - Added [dmarx](https://github.com/dmarx) [Multi-Modal-Comparators](https://github.com/dmarx/Multi-Modal-Comparators)
   - Added [crowsonkb](https://github.com/crowsonkb) aesthetic models
+  - Added [LAION-AI](https://github.com/LAION-AI/aesthetic-predictor) aesthetic predictor embeddings
   - Added Dango233 inpainting mode
   - Added multimodalart "internal upscaling" 
   - Added multimodalart savable settings and setting library (including `dango33-defaults`, `disco-diffusion-defaults` and `halfway_expedition` default settings)

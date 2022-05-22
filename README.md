@@ -3,7 +3,7 @@
 #### Formerly known as Princess Generator
 Majesty Diffusion are implementations of text-to-image diffusion models with a royal touch 👸
 
-Access our [Majestic Guide](multimodal.art/majesty-diffusion) (_under construction_), join our community on [Discord](https://discord.gg/yNBtQBEDfZ) or reach out via [@multimodalart on Twitter](https://twitter.com/multimodalart))
+Access our [Majestic Guide](https://multimodal.art/majesty-diffusion) (_under construction_), join our community on [Discord](https://discord.gg/yNBtQBEDfZ) or reach out via [@multimodalart on Twitter](https://twitter.com/multimodalart))
 
 Current implementations:
 - [Latent Majesty Diffusion](#latent-majesty-diffusion-v12)

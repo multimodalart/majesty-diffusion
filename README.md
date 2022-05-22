@@ -21,6 +21,7 @@ A [Dango233](https://github.com/Dango233) and [apolinario (@multimodalart)](http
   - Added Dango233 mag and clamp settings
   - Added Dango233 linear ETA scheduling
   - Added Dango233 negative prompts for Latent Diffusion Guidance
+  - Added open_clip gradient checkpointing
   - Added [Jack000](https://github.com/Jack000) [GLID-3 XL](https://github.com/Jack000/glid-3-xl) watermark free fine-tuned model
   - Added [dmarx](https://github.com/dmarx/) [Multi-Modal-Comparators](https://github.com/dmarx/Multi-Modal-Comparators) for CLIP and CLIP-like models
   - Added [open_clip](https://github.com/mlfoundations/open_clip) gradient caching
@@ -37,7 +38,7 @@ A [Dango233](https://github.com/Dango233) and [apolinario (@multimodalart)](http
   - Added Dango233 cuts, augs and attributes scheduling
   - Added Dango233 mag and clamp settings
   - Added multimodalart ETA scheduling
-  - Added open_clip gradient caching
+  - Added open_clip gradient checkpointing
   - Added [nshepperd](https://github.com/nshepperd) v-diffusion imagenet512 and danbooru models
   - Added [dmarx](https://github.com/dmarx) [Multi-Modal-Comparators](https://github.com/dmarx/Multi-Modal-Comparators)
   - Added [crowsonkb](https://github.com/crowsonkb) aesthetic models
@@ -53,7 +54,7 @@ A [Dango233](https://github.com/Dango233) and [apolinario (@multimodalart)](http
   - [ ] Modularise everything
   - [ ] Create a command line version
   - [ ] Add an inpainting UI
-  - [ ] Improve performance 
+  - [ ] Improve performance, both in speed and VRAM consumption
   - [ ] More technical issues will be listed on [https://github.com/multimodalart/majesty-diffusion/issues](issues)
 
 ## Acknowledgments

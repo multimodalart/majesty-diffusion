@@ -4,6 +4,7 @@
 Majesty Diffusion are implementations of text-to-image diffusion models with a royal touch 👸
 
 Access our [Majestic Guide](multimodal.art/majesty-diffusion) (_under construction_), join our community on [Discord](https://discord.gg/yNBtQBEDfZ) or reach out via [@multimodalart on Twitter](https://twitter.com/multimodalart))
+
 Current implementations:
 - [Latent Majesty Diffusion](#latent-majesty-diffusion-v12)
 - [V-Majesty Diffusion](#v-majesty-diffusion-v12)
@@ -43,6 +44,16 @@ A [Dango233](https://github.com/Dango233) and [apolinario (@multimodalart)](http
   - Added Dango233 inpainting mode
   - Added multimodalart "internal upscaling" 
   - Added multimodalart savable settings and setting library (including `dango33-defaults`, `disco-diffusion-defaults` and `halfway_expedition` default settings)
+
+## TODO
+### Please feel free to help us in any of these tasks!
+  - [ ] Figure out better defaults and add more settings to the settings library (contribute with a PR!)
+  - [ ] Add all notebooks to a single pipeline where on model can be the output of the other (similar to [Centipede Diffusion](https://github.com/Zalring/Centipede_Diffusion))
+  - [ ] Add all notebooks to the [MindsEye UI](multimodal.art/mindseye)
+  - [ ] Modularise everything
+  - [ ] Create a command line version
+  - [ ] Add an inpainting UI
+  - [ ] More technical issues will be listed on [https://github.com/multimodalart/majesty-diffusion/issues](issues)
 
 ## Acknowledgments
 Some functions and methods are from various code masters - including but not limited to [advadnoun](https://twitter.com/advadnoun), [crowsonkb](https://github.com/crowsonkb), [nshepperd](https://github.com/nshepperd), [russelldc](https://github.com/russelldc), [Dango233](https://github.com/Dango233) and many others

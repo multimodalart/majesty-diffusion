@@ -53,6 +53,7 @@ A [Dango233](https://github.com/Dango233) and [apolinario (@multimodalart)](http
   - [ ] Modularise everything
   - [ ] Create a command line version
   - [ ] Add an inpainting UI
+  - [ ] Improve performance 
   - [ ] More technical issues will be listed on [https://github.com/multimodalart/majesty-diffusion/issues](issues)
 
 ## Acknowledgments

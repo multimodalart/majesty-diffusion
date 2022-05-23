@@ -30,7 +30,7 @@ A [Dango233](https://github.com/Dango233) and [apolinario (@multimodalart)](http
   - Added [crowsonkb](https://github.com/crowsonkb/v-diffusion-pytorch) aesthetic models
   - Added [LAION-AI](https://github.com/LAION-AI/aesthetic-predictor) aesthetic predictor embeddings
   - Added [Dango233](https://github.com/Dango233) inpainting mode
-  - Added [apolinario (@multimodalart)](https://github.com/multimodalart) savable settings and setting library (including `colab-free-default`, `dango233-princess`, `the-other-zippy` shared settings. Share yours with us!)
+  - Added [apolinario (@multimodalart)](https://github.com/multimodalart) savable settings and setting library (including `colab-free-default`, `dango233-princesses`, `the-other-zippy` and `makaitrad` shared settings. Share yours with us too with a pull request!
 
 ## V-Majesty Diffusion v1.2
 ##### Formerly known as Princess Generator ver. Victoria
@@ -48,7 +48,7 @@ A [Dango233](https://github.com/Dango233) and [apolinario (@multimodalart)](http
   - Added [open_clip](https://github.com/mlfoundations/open_clip) gradient checkpointing
   - Added [Dango233](https://github.com/Dango233) inpainting mode
   - Added [apolinario (@multimodalart)](https://github.com/multimodalart) "internal upscaling" (upscales the output with `yfcc_2` or `openimages`) 
-  - Added [apolinario (@multimodalart)](https://github.com/multimodalart) savable settings and setting library (including `dango33-defaults`, `disco-diffusion-defaults` default settings)
+  - Added [apolinario (@multimodalart)](https://github.com/multimodalart) savable settings and setting library (including `defaults`, `disco-diffusion-defaults` default settings). Share yours with us too with a pull request!
 
 ## TODO
 ### Please feel free to help us in any of these tasks!

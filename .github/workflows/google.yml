@@ -18,7 +18,7 @@ on:
       - main
 
 env:
-  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  PROJECT_ID: nightmarebot-ai
   GAR_LOCATION: us-central1 # TODO: update region of the Artifact Registry
   REPOSITORY: nightmarebot # TODO: update to Artifact Registry docker repository
   IMAGE: majesty-diffusion

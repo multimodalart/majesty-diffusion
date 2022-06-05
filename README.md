@@ -13,11 +13,12 @@ Current implementations:
 - [V-Majesty Diffusion](#v-majesty-diffusion-v12)
 
 
-## Latent Majesty Diffusion v1.3
+## Latent Majesty Diffusion v1.4
 ##### Formerly known as Latent Princess Generator
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/multimodalart/MajestyDiffusion/blob/main/latent.ipynb)
 
 A [Dango233](https://github.com/Dango233) and [apolinario (@multimodalart)](https://github.com/multimodalart) Colab notebook implementing [CompVis](https://github.com/CompVis)' Latent Diffusion, with the following changes:
+v1.2
   - Added [Dango233](https://github.com/Dango233) CLIP Guidance
   - Added [Dango233](https://github.com/Dango233) magical **new** step and upscaling scheduling
   - Added [Dango233](https://github.com/Dango233) cuts, augs and attributes scheduling
@@ -31,6 +32,13 @@ A [Dango233](https://github.com/Dango233) and [apolinario (@multimodalart)](http
   - Added [LAION-AI](https://github.com/LAION-AI/aesthetic-predictor) aesthetic predictor embeddings
   - Added [Dango233](https://github.com/Dango233) inpainting mode
   - Added [apolinario (@multimodalart)](https://github.com/multimodalart) savable settings and setting library (including `colab-free-default`, `dango233-princesses`, `the-other-zippy` and `makaitrad` shared settings. Share yours with us too with a pull request!
+v1.3
+  - Better Upscaler (learn how to use it on our [Majestic Guide](https://multimodal.art/majesty-diffusion))
+v1.4
+ - Added [Dango233](https://github.com/Dango233) Customised Dynamic Thresholding
+ - Added [open_clip](https://github.com/mlfoundations/open_clip) ViT-L/14 LAION-400M trained 
+ - Fix CLOOB perceptor from MMC
+ - Removes latent upscaler (was broken), adds RGB upscaler
 
 ## V-Majesty Diffusion v1.2
 ##### Formerly known as Princess Generator ver. Victoria

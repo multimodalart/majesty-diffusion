@@ -1,4 +1,5 @@
 import argparse, os, sys, glob
+import shutil
 import torch
 import numpy as np
 from omegaconf import OmegaConf
@@ -47,6 +48,7 @@ from threading import Thread
 import time
 import json
 
+
 #sys.path.append('../CLIP')
 #Resizeright for better gradient when resizing
 #sys.path.append('../ResizeRight/')
@@ -60,8 +62,33 @@ import clip
 #pretrained.list_configs()
 from torch.utils.tensorboard import SummaryWriter
 
-model_path = "models/"
+model_path = "/models"
 outputs_path = "/tmp/results"
+
+# download models as needed
+models = [
+  ["latent_diffusion_txt2img_f8_large.ckpt", "https://ommer-lab.com/files/latent-diffusion/nitro/txt2img-f8-large/model.ckpt"],
+  ["finetuned_state_dict.pt", "https://huggingface.co/multimodalart/compvis-latent-diffusion-text2img-large/resolve/main/finetuned_state_dict.pt"],
+  ["ava_vit_l_14_336_linear.pth", "https://multimodal.art/models/ava_vit_l_14_336_linear.pth"],
+  ["sa_0_4_vit_l_14_linear.pth", "https://multimodal.art/models/sa_0_4_vit_l_14_linear.pth"],
+  ["ava_vit_l_14_linear.pth","https://multimodal.art/models/ava_vit_l_14_linear.pth"],
+  ["ava_vit_b_16_linear.pth","http://batbot.tv/ai/models/v-diffusion/ava_vit_b_16_linear.pth"],
+  ["sa_0_4_vit_b_16_linear.pth","https://multimodal.art/models/sa_0_4_vit_b_16_linear.pth"],
+  ["sa_0_4_vit_b_32_linear.pth","https://multimodal.art/models/sa_0_4_vit_b_32_linear.pth"],
+  ["openimages_512x_png_embed224.npz","https://github.com/nshepperd/jax-guided-diffusion/raw/8437b4d390fcc6b57b89cedcbaf1629993c09d03/data/openimages_512x_png_embed224.npz"],
+  ["imagenet_512x_jpg_embed224.npz","https://github.com/nshepperd/jax-guided-diffusion/raw/8437b4d390fcc6b57b89cedcbaf1629993c09d03/data/imagenet_512x_jpg_embed224.npz"],
+  ["GFPGANv1.3.pth", "https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth"]
+]
+ 
+for model in models:
+  print(f'Checking {model[0]}...', flush=True)
+  model_file = f'{model_path}/{model[0]}'
+  if not os.path.exists(model_file):
+    print(f'Downloading {model[1]}', flush=True)
+    subprocess.call(["wget", "-nv", "-O", model_file, model[1], "--no-check-certificate"], shell=False)
+if not os.path.exists("GFPGAN/experiments/pretrained_models/GFPGANv1.3.pth"):
+  shutil.copyfile(f'{model_path}/GFPGANv1.3.pth', "GFPGAN/experiments/pretrained_models/GFPGANv1.3.pth")
+
 
 torch.backends.cudnn.benchmark = True
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")

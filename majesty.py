@@ -149,6 +149,7 @@ clip_guidance_scale = 5000
 how_many_batches = 1
 aesthetic_loss_scale = 200
 augment_cuts = True
+n_samples = 1
 
 init_image = None
 starting_timestep = 0.9

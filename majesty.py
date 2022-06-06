@@ -290,7 +290,8 @@ def load_model_from_config(
     return model
 
 
-def get_mmc_models(clip_load_list):
+def get_mmc_models():
+    global mmc_models
     mmc_models = []
     for model_key in clip_load_list:
         if not model_key:
@@ -303,7 +304,6 @@ def get_mmc_models(clip_load_list):
                 "id": m_id,
             }
         )
-    return mmc_models
 
 
 def set_custom_schedules():
@@ -804,7 +804,7 @@ def generate_settings_file(add_prompts=False, add_dimensions=False):
     return settings
 
 
-def load_clip_models(mmc_models):
+def load_clip_models():
     global clip_model, clip_size, clip_tokenize, clip_normalize, clip_list
     for item in mmc_models:
         print("Loaded ", item["id"])
@@ -822,13 +822,10 @@ def load_clip_models(mmc_models):
 
 
 def full_clip_load():
-    global clip_model, clip_size, clip_tokenize, clip_normalize, clip_list, clip_load_list, mmc_models
     torch.cuda.empty_cache()
     gc.collect()
-    mmc_models = get_mmc_models(clip_load_list)
-    clip_model, clip_size, clip_tokenize, clip_normalize, clip_list = load_clip_models(
-        mmc_models
-    )
+    get_mmc_models()
+    load_clip_models()
 
 
 # Alstro's aesthetic model

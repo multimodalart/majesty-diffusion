@@ -162,6 +162,8 @@ normalize = transforms.Normalize(
     mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711]
 )
 
+
+# Globals
 custom_settings = None
 generate_video = False
 model = {}
@@ -180,7 +182,10 @@ aesthetic_model_336, aesthetic_model_224, aesthetic_model_16, aesthetic_model_32
 )
 custom_schedules = []
 
-progress, image_grid, writer, img_tensor, im = {}, {}, {}, {}, {}
+progress, image_grid, writer, img_tensor, im = None, None, None, None, None
+target_embeds, weights, zero_embed, init, scale_factor = None, None, None, None, None
+clamp_start_, clamp_max = None, None
+clip_guidance_schedule = None
 
 
 def download_models():
@@ -485,7 +490,6 @@ def cond_fn(x, t):
     t = 1000 - t
     t = t[0]
     with torch.enable_grad():
-        global clamp_start_, clamp_max
         x = x.detach()
         x = x.requires_grad_()
         x_in = model.decode_first_stage(x)
@@ -640,7 +644,6 @@ def null_fn(x_in):
 
 
 def display_handler(x, i, cadance=5, decode=True):
-    global progress, image_grid, writer, img_tensor, im
     img_tensor = x
     if i % cadance == 0:
         if decode:
@@ -975,7 +978,7 @@ def do_run():
             stdin=PIPE,
         )
     #  with torch.cuda.amp.autocast():
-    global progress, target_embeds, weights, zero_embed, init, scale_factor, image_grid
+
     scale_factor = 1
     make_cutouts = {}
     for i in clip_list:

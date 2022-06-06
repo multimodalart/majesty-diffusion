@@ -59,7 +59,6 @@ from mmc.registry import REGISTRY
 import mmc.loaders  # force trigger model registrations
 from mmc.mock.openai import MockOpenaiClip
 
-
 model_path = "models"
 outputs_path = "results"
 device = None
@@ -874,11 +873,10 @@ def config_init_image():
 
 
 def config_clip_guidance():
-    global clip_guidance_index
-    try:
-        clip_guidance_schedule
+    global clip_guidance_index, clip_guidance_schedule, clip_guidance_scale
+    if clip_guidance_schedule:
         clip_guidance_index = clip_guidance_schedule
-    except:
+    else:
         clip_guidance_index = [clip_guidance_scale] * 1000
 
 

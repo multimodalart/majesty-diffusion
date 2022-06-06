@@ -180,6 +180,8 @@ aesthetic_model_336, aesthetic_model_224, aesthetic_model_16, aesthetic_model_32
 )
 custom_schedules = []
 
+global progress, image_grid, writer, img_tensor, im
+
 
 def download_models():
     # download models as needed

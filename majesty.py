@@ -812,7 +812,7 @@ def load_clip_models(mmc_models):
     return clip_model, clip_size, clip_tokenize, clip_normalize, clip_list
 
 
-def full_clip_load(clip_load_list):
+def full_clip_load():
     torch.cuda.empty_cache()
     gc.collect()
     try:

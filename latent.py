@@ -275,14 +275,9 @@ def main(argv):
 
     majesty.opt.outdir = majesty.outputs_path
 
+    majesty.clip_load_list = clip_load_list
+
     majesty.load_custom_settings()
-
-    from mmc.multimmc import MultiMMC
-    from mmc.modalities import TEXT, IMAGE
-
-    temp_perceptor = MultiMMC(TEXT, IMAGE)
-
-    mmc_models = majesty.get_mmc_models(clip_load_list)
 
     majesty.full_clip_load()
 

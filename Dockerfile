@@ -32,5 +32,7 @@ RUN poetry build; pip install dist/mmc*.whl
 WORKDIR /src
 RUN python Multi-Modal-Comparators/src/mmc/napm_installs/__init__.py
 
+COPY majesty_diffusion.py .
 COPY latent.py .
+COPY latent_settings_library .
 ENTRYPOINT ["python", "latent.py"]

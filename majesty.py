@@ -59,7 +59,6 @@ from mmc.registry import REGISTRY
 import mmc.loaders  # force trigger model registrations
 from mmc.mock.openai import MockOpenaiClip
 
-
 model_path = "models"
 outputs_path = "results"
 device = None
@@ -149,6 +148,7 @@ clip_guidance_scale = 5000
 how_many_batches = 1
 aesthetic_loss_scale = 200
 augment_cuts = True
+n_samples = 1
 
 init_image = None
 starting_timestep = 0.9
@@ -161,6 +161,8 @@ normalize = transforms.Normalize(
     mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711]
 )
 
+
+# Globals
 custom_settings = None
 generate_video = False
 model = {}
@@ -178,6 +180,17 @@ aesthetic_model_336, aesthetic_model_224, aesthetic_model_16, aesthetic_model_32
     {},
 )
 custom_schedules = []
+
+progress = None
+image_grid, writer, img_tensor, im = {}, {}, {}, {}
+target_embeds, weights, zero_embed, init = {}, {}, {}, {}
+make_cutouts = {}
+scale_factor = 1
+clamp_start_, clamp_max = None, None
+clip_guidance_schedule = None
+prompts = []
+mmc_models = []
+last_step_uspcale_list = []
 
 
 def download_models():
@@ -277,7 +290,8 @@ def load_model_from_config(
     return model
 
 
-def get_mmc_models(clip_load_list):
+def get_mmc_models():
+    global mmc_models
     mmc_models = []
     for model_key in clip_load_list:
         if not model_key:
@@ -290,18 +304,16 @@ def get_mmc_models(clip_load_list):
                 "id": m_id,
             }
         )
-    return mmc_models
 
 
 def set_custom_schedules():
+    global custom_schedules
     custom_schedules = []
     for schedule_item in custom_schedule_setting:
         if isinstance(schedule_item, list):
             custom_schedules.append(np.arange(*schedule_item))
         else:
             custom_schedules.append(schedule_item)
-
-    return custom_schedules
 
 
 def parse_prompt(prompt):
@@ -482,7 +494,6 @@ def cond_fn(x, t):
     t = 1000 - t
     t = t[0]
     with torch.enable_grad():
-        global clamp_start_, clamp_max
         x = x.detach()
         x = x.requires_grad_()
         x_in = model.decode_first_stage(x)
@@ -637,7 +648,7 @@ def null_fn(x_in):
 
 
 def display_handler(x, i, cadance=5, decode=True):
-    global progress, image_grid, writer, img_tensor, im
+    global img_tensor, image_grid, p, progress
     img_tensor = x
     if i % cadance == 0:
         if decode:
@@ -650,7 +661,8 @@ def display_handler(x, i, cadance=5, decode=True):
         with io.BytesIO() as output:
             im = Image.fromarray(grid.astype(np.uint8))
             im.save(output, format="PNG")
-            progress.value = output.getvalue()
+            if progress:
+                progress.value = output.getvalue()
             if generate_video:
                 im.save(p.stdin, "PNG")
 
@@ -793,9 +805,8 @@ def generate_settings_file(add_prompts=False, add_dimensions=False):
     return settings
 
 
-def load_clip_models(mmc_models):
-    clip_model, clip_size, clip_tokenize, clip_normalize = {}, {}, {}, {}
-    clip_list = []
+def load_clip_models():
+    global clip_model, clip_size, clip_tokenize, clip_normalize, clip_list
     for item in mmc_models:
         print("Loaded ", item["id"])
         clip_list.append(item["id"])
@@ -809,25 +820,18 @@ def load_clip_models(mmc_models):
                 clip_normalize[item["id"]] = clip_model[item["id"]].normalize
             else:
                 clip_normalize[item["id"]] = normalize
-    return clip_model, clip_size, clip_tokenize, clip_normalize, clip_list
 
 
 def full_clip_load():
     torch.cuda.empty_cache()
     gc.collect()
-    try:
-        del clip_model, clip_size, clip_tokenize, clip_normalize, clip_list
-    except:
-        pass
-    mmc_models = get_mmc_models(clip_load_list)
-    clip_model, clip_size, clip_tokenize, clip_normalize, clip_list = load_clip_models(
-        mmc_models
-    )
-    return clip_model, clip_size, clip_tokenize, clip_normalize, clip_list
+    get_mmc_models()
+    load_clip_models()
 
 
 # Alstro's aesthetic model
 def load_aesthetic_model():
+    global aesthetic_model_336, aesthetic_model_224, aesthetic_model_16, aesthetic_model_32
     aesthetic_model_336 = torch.nn.Linear(768, 1).cuda()
     aesthetic_model_336.load_state_dict(
         torch.load(f"{model_path}/ava_vit_l_14_336_linear.pth")
@@ -850,10 +854,12 @@ def load_aesthetic_model():
 
 
 def load_lpips_model():
+    global lpips_model
     lpips_model = lpips.LPIPS(net="vgg").to(device)
 
 
 def config_init_image():
+    global custom_schedule_setting
     if (
         ((init_image is not None) and (init_image != "None") and (init_image != ""))
         and starting_timestep != 1
@@ -867,14 +873,15 @@ def config_init_image():
 
 
 def config_clip_guidance():
-    try:
-        clip_guidance_schedule
+    global clip_guidance_index, clip_guidance_schedule, clip_guidance_scale
+    if clip_guidance_schedule:
         clip_guidance_index = clip_guidance_schedule
-    except:
+    else:
         clip_guidance_index = [clip_guidance_scale] * 1000
 
 
 def config_output_size():
+    global opt
     opt.W = (width // 64) * 64
     opt.H = (height // 64) * 64
     if opt.W != width or opt.H != height:
@@ -884,6 +891,7 @@ def config_output_size():
 
 
 def config_options():
+    global aes_scale, opt, aug
     aes_scale = aesthetic_loss_scale
     opt.mag_mul = opt_mag_mul
     opt.ddim_eta = opt_ddim_eta
@@ -904,6 +912,7 @@ def use_args(args: argparse.Namespace):
 
 def load_custom_settings():
     global_var_scope = globals()
+    global clip_load_list
     warnings.filterwarnings("ignore")
     if (
         custom_settings is not None
@@ -943,6 +952,7 @@ def load_custom_settings():
 
 
 def do_run():
+    global p, make_cutouts, target_embeds, weights, base_count, opt, model, progress
     if generate_video:
         fps = 24
         p = Popen(
@@ -972,12 +982,9 @@ def do_run():
             stdin=PIPE,
         )
     #  with torch.cuda.amp.autocast():
-    global progress, target_embeds, weights, zero_embed, init, scale_factor
-    scale_factor = 1
-    make_cutouts = {}
+
     for i in clip_list:
         make_cutouts[i] = MakeCutouts(clip_size[i], Overview=1)
-    target_embeds, weights, zero_embed = {}, {}, {}
     for i in clip_list:
         target_embeds[i] = []
         weights[i] = []
@@ -1059,10 +1066,8 @@ def do_run():
         mask = transform(mask)
         print(mask)
 
-    progress = widgets.Image(
-        layout=widgets.Layout(max_width="400px", max_height="512px")
-    )
-    display.display(progress)
+    if progress:
+        display.display(progress)
 
     if opt.plms:
         sampler = PLMSSampler(model)
@@ -1094,7 +1099,6 @@ def do_run():
                         x_T = torch.randn([opt.n_samples, *shape], device=device)
                     else:
                         x_T = init_encoded
-                    last_step_uspcale_list = []
 
                     for custom_schedule in custom_schedules:
                         if type(custom_schedule) != type(""):
@@ -1174,7 +1178,8 @@ def do_run():
                                 )
                                 with io.BytesIO() as output:
                                     face_corrected.save(output, format="PNG")
-                                    progress.value = output.getvalue()
+                                    if progress:
+                                        progress.value = output.getvalue()
                                 init = Image.open(
                                     fetch(
                                         f"/tmp/results/restored_imgs/{temp_file_name}"

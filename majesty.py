@@ -824,11 +824,6 @@ def full_clip_load():
     global clip_model, clip_size, clip_tokenize, clip_normalize, clip_list, clip_load_list
     torch.cuda.empty_cache()
     gc.collect()
-    try:
-        del clip_model, clip_size, clip_tokenize, clip_normalize, clip_list
-    except:
-        pass
-    global clip_model, clip_size, clip_tokenize, clip_normalize, clip_list, clip_load_list
     mmc_models = get_mmc_models(clip_load_list)
     clip_model, clip_size, clip_tokenize, clip_normalize, clip_list = load_clip_models(
         mmc_models

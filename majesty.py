@@ -190,6 +190,7 @@ clamp_start_, clamp_max = None, None
 clip_guidance_schedule = None
 prompts = []
 last_step_uspcale_list = []
+p: Popen[bytes] = []
 
 
 def download_models():
@@ -306,14 +307,13 @@ def get_mmc_models(clip_load_list):
 
 
 def set_custom_schedules():
+    global custom_schedules
     custom_schedules = []
     for schedule_item in custom_schedule_setting:
         if isinstance(schedule_item, list):
             custom_schedules.append(np.arange(*schedule_item))
         else:
             custom_schedules.append(schedule_item)
-
-    return custom_schedules
 
 
 def parse_prompt(prompt):
@@ -648,6 +648,7 @@ def null_fn(x_in):
 
 
 def display_handler(x, i, cadance=5, decode=True):
+    global img_tensor, image_grid, p
     img_tensor = x
     if i % cadance == 0:
         if decode:
@@ -804,8 +805,7 @@ def generate_settings_file(add_prompts=False, add_dimensions=False):
 
 
 def load_clip_models(mmc_models):
-    clip_model, clip_size, clip_tokenize, clip_normalize = {}, {}, {}, {}
-    clip_list = []
+    global clip_model, clip_size, clip_tokenize, clip_normalize, clip_list
     for item in mmc_models:
         print("Loaded ", item["id"])
         clip_list.append(item["id"])
@@ -819,10 +819,10 @@ def load_clip_models(mmc_models):
                 clip_normalize[item["id"]] = clip_model[item["id"]].normalize
             else:
                 clip_normalize[item["id"]] = normalize
-    return clip_model, clip_size, clip_tokenize, clip_normalize, clip_list
 
 
 def full_clip_load():
+    global clip_model, clip_size, clip_tokenize, clip_normalize, clip_list
     torch.cuda.empty_cache()
     gc.collect()
     try:
@@ -833,11 +833,11 @@ def full_clip_load():
     clip_model, clip_size, clip_tokenize, clip_normalize, clip_list = load_clip_models(
         mmc_models
     )
-    return clip_model, clip_size, clip_tokenize, clip_normalize, clip_list
 
 
 # Alstro's aesthetic model
 def load_aesthetic_model():
+    global aesthetic_model_336, aesthetic_model_224, aesthetic_model_16, aesthetic_model_32
     aesthetic_model_336 = torch.nn.Linear(768, 1).cuda()
     aesthetic_model_336.load_state_dict(
         torch.load(f"{model_path}/ava_vit_l_14_336_linear.pth")
@@ -860,10 +860,12 @@ def load_aesthetic_model():
 
 
 def load_lpips_model():
+    global lpips_model
     lpips_model = lpips.LPIPS(net="vgg").to(device)
 
 
 def config_init_image():
+    global custom_schedule_setting
     if (
         ((init_image is not None) and (init_image != "None") and (init_image != ""))
         and starting_timestep != 1
@@ -877,6 +879,7 @@ def config_init_image():
 
 
 def config_clip_guidance():
+    global clip_guidance_index
     try:
         clip_guidance_schedule
         clip_guidance_index = clip_guidance_schedule
@@ -885,6 +888,7 @@ def config_clip_guidance():
 
 
 def config_output_size():
+    global opt
     opt.W = (width // 64) * 64
     opt.H = (height // 64) * 64
     if opt.W != width or opt.H != height:
@@ -894,6 +898,7 @@ def config_output_size():
 
 
 def config_options():
+    global aes_scale, opt, aug
     aes_scale = aesthetic_loss_scale
     opt.mag_mul = opt_mag_mul
     opt.ddim_eta = opt_ddim_eta
@@ -914,6 +919,7 @@ def use_args(args: argparse.Namespace):
 
 def load_custom_settings():
     global_var_scope = globals()
+    global clip_load_list
     warnings.filterwarnings("ignore")
     if (
         custom_settings is not None
@@ -953,6 +959,7 @@ def load_custom_settings():
 
 
 def do_run():
+    global p, make_cutouts, target_embeds, weights, base_count, opt, model
     if generate_video:
         fps = 24
         p = Popen(

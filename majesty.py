@@ -23,6 +23,8 @@ from dotmap import DotMap
 import ipywidgets as widgets
 from math import pi
 
+from resize_right import resize
+
 import subprocess
 from subprocess import Popen, PIPE
 
@@ -50,6 +52,7 @@ from numpy import nan
 from threading import Thread
 import time
 import json
+import warnings
 
 import mmc
 from mmc.registry import REGISTRY
@@ -158,6 +161,24 @@ normalize = transforms.Normalize(
     mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711]
 )
 
+custom_settings = None
+generate_video = False
+model = {}
+aes_scale = None
+aug = None
+
+clip_model, clip_size, clip_tokenize, clip_normalize = {}, {}, {}, {}
+clip_list, clip_load_list, clip_guidance_index = [], [], []
+
+
+aesthetic_model_336, aesthetic_model_224, aesthetic_model_16, aesthetic_model_32 = (
+    {},
+    {},
+    {},
+    {},
+)
+custom_schedules = []
+
 
 def download_models():
     # download models as needed
@@ -211,13 +232,13 @@ def download_models():
     if not os.path.exists(model_path):
         os.makedirs(model_path)
 
-    for model in models:
-        print(f"Checking {model[0]}...", flush=True)
-        model_file = f"{model_path}/{model[0]}"
+    for item in models:
+        print(f"Checking {item[0]}...", flush=True)
+        model_file = f"{model_path}/{item[0]}"
         if not os.path.exists(model_file):
-            print(f"Downloading {model[1]}", flush=True)
+            print(f"Downloading {item[1]}", flush=True)
             subprocess.call(
-                ["wget", "-nv", "-O", model_file, model[1], "--no-check-certificate"],
+                ["wget", "-nv", "-O", model_file, item[1], "--no-check-certificate"],
                 shell=False,
             )
     if not os.path.exists("GFPGAN/experiments/pretrained_models/GFPGANv1.3.pth"):
@@ -874,7 +895,82 @@ def config_options():
     aug = augment_cuts
 
 
+def use_args(args: argparse.Namespace):
+    global_var_scope = globals()
+    warnings.filterwarnings("ignore")
+    for k, v in vars(args).items():
+        global_var_scope[k] = v
+
+
+def load_custom_settings():
+    global_var_scope = globals()
+    warnings.filterwarnings("ignore")
+    if (
+        custom_settings is not None
+        and custom_settings != ""
+        and custom_settings != "path/to/settings.cfg"
+    ):
+        print("Loaded ", custom_settings)
+        try:
+            from configparser import ConfigParser
+        except ImportError:
+            from ConfigParser import ConfigParser
+        import configparser
+
+        config = ConfigParser()
+        config.read(custom_settings)
+        # custom_settings_stream = fetch(custom_settings)
+        # Load CLIP models from config
+        if config.has_section("clip_list"):
+            clip_incoming_list = config.items("clip_list")
+            clip_incoming_models = clip_incoming_list[0]
+            incoming_perceptors = eval(clip_incoming_models[1])
+            if (len(incoming_perceptors) != len(clip_load_list)) or not all(
+                elem in incoming_perceptors for elem in clip_load_list
+            ):
+                clip_load_list = incoming_perceptors
+
+        # Load settings from config and replace variables
+        if config.has_section("basic_settings"):
+            basic_settings = config.items("basic_settings")
+            for basic_setting in basic_settings:
+                global_var_scope[basic_setting[0]] = eval(basic_setting[1])
+
+        if config.has_section("advanced_settings"):
+            advanced_settings = config.items("advanced_settings")
+            for advanced_setting in advanced_settings:
+                global_var_scope[advanced_setting[0]] = eval(advanced_setting[1])
+
+
 def do_run():
+    if generate_video:
+        fps = 24
+        p = Popen(
+            [
+                "ffmpeg",
+                "-y",
+                "-f",
+                "image2pipe",
+                "-vcodec",
+                "png",
+                "-r",
+                str(fps),
+                "-i",
+                "-",
+                "-vcodec",
+                "libx264",
+                "-r",
+                str(fps),
+                "-pix_fmt",
+                "yuv420p",
+                "-crf",
+                "17",
+                "-preset",
+                "veryslow",
+                "video.mp4",
+            ],
+            stdin=PIPE,
+        )
     #  with torch.cuda.amp.autocast():
     global progress, target_embeds, weights, zero_embed, init, scale_factor
     scale_factor = 1
@@ -1139,3 +1235,6 @@ def do_run():
         Image.fromarray(grid.astype(np.uint8)).save(
             os.path.join(outpath, f"grid_{str(round(time.time()))}.png")
         )
+
+    if generate_video:
+        p.stdin.close()

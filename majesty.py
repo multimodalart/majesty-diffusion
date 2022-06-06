@@ -182,10 +182,14 @@ aesthetic_model_336, aesthetic_model_224, aesthetic_model_16, aesthetic_model_32
 )
 custom_schedules = []
 
-progress, image_grid, writer, img_tensor, im = None, None, None, None, None
-target_embeds, weights, zero_embed, init, scale_factor = None, None, None, None, None
+progress, image_grid, writer, img_tensor, im = {}, {}, {}, {}, {}
+target_embeds, weights, zero_embed, init = {}, {}, {}, {}
+make_cutouts = {}
+scale_factor = 1
 clamp_start_, clamp_max = None, None
 clip_guidance_schedule = None
+prompts = []
+last_step_uspcale_list = []
 
 
 def download_models():
@@ -979,11 +983,8 @@ def do_run():
         )
     #  with torch.cuda.amp.autocast():
 
-    scale_factor = 1
-    make_cutouts = {}
     for i in clip_list:
         make_cutouts[i] = MakeCutouts(clip_size[i], Overview=1)
-    target_embeds, weights, zero_embed = {}, {}, {}
     for i in clip_list:
         target_embeds[i] = []
         weights[i] = []
@@ -1100,7 +1101,6 @@ def do_run():
                         x_T = torch.randn([opt.n_samples, *shape], device=device)
                     else:
                         x_T = init_encoded
-                    last_step_uspcale_list = []
 
                     for custom_schedule in custom_schedules:
                         if type(custom_schedule) != type(""):

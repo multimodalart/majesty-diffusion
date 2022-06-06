@@ -648,7 +648,7 @@ def null_fn(x_in):
 
 
 def display_handler(x, i, cadance=5, decode=True):
-    global img_tensor, image_grid, p
+    global img_tensor, image_grid, p, progress
     img_tensor = x
     if i % cadance == 0:
         if decode:
@@ -952,7 +952,7 @@ def load_custom_settings():
 
 
 def do_run():
-    global p, make_cutouts, target_embeds, weights, base_count, opt, model
+    global p, make_cutouts, target_embeds, weights, base_count, opt, model, progress
     if generate_video:
         fps = 24
         p = Popen(

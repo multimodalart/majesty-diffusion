@@ -182,7 +182,8 @@ aesthetic_model_336, aesthetic_model_224, aesthetic_model_16, aesthetic_model_32
 )
 custom_schedules = []
 
-progress, image_grid, writer, img_tensor, im = {}, {}, {}, {}, {}
+progress = None
+image_grid, writer, img_tensor, im = {}, {}, {}, {}
 target_embeds, weights, zero_embed, init = {}, {}, {}, {}
 make_cutouts = {}
 scale_factor = 1
@@ -661,7 +662,8 @@ def display_handler(x, i, cadance=5, decode=True):
         with io.BytesIO() as output:
             im = Image.fromarray(grid.astype(np.uint8))
             im.save(output, format="PNG")
-            progress.value = output.getvalue()
+            if progress:
+                progress.value = output.getvalue()
             if generate_video:
                 im.save(p.stdin, "PNG")
 
@@ -1066,10 +1068,8 @@ def do_run():
         mask = transform(mask)
         print(mask)
 
-    progress = widgets.Image(
-        layout=widgets.Layout(max_width="400px", max_height="512px")
-    )
-    display.display(progress)
+    if progress:
+        display.display(progress)
 
     if opt.plms:
         sampler = PLMSSampler(model)
@@ -1180,7 +1180,8 @@ def do_run():
                                 )
                                 with io.BytesIO() as output:
                                     face_corrected.save(output, format="PNG")
-                                    progress.value = output.getvalue()
+                                    if progress:
+                                        progress.value = output.getvalue()
                                 init = Image.open(
                                     fetch(
                                         f"/tmp/results/restored_imgs/{temp_file_name}"

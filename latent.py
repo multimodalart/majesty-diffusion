@@ -49,7 +49,7 @@ from numpy import nan
 from threading import Thread
 import time
 import json
-import majesty_diffusion as majesty
+import majesty as majesty
 
 
 # sys.path.append('../CLIP')
@@ -88,30 +88,13 @@ model = majesty.load_model_from_config(
     False,
     latent_diffusion_model,
 )  # TODO: check path
-model = model.half().eval().to(device)
+majesty.model = model.half().eval().to(device)
 # if(latent_diffusion_model == "finetuned"):
 #  model.model = model.model.half().eval().to(device)
 
-normalize = transforms.Normalize(
-    mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711]
-)
-
+majesty.load_lpips_model()
 # Alstro's aesthetic model
-aesthetic_model_336 = torch.nn.Linear(768, 1).cuda()
-aesthetic_model_336.load_state_dict(
-    torch.load(f"{model_path}/ava_vit_l_14_336_linear.pth")
-)
-
-aesthetic_model_224 = torch.nn.Linear(768, 1).cuda()
-aesthetic_model_224.load_state_dict(torch.load(f"{model_path}/ava_vit_l_14_linear.pth"))
-
-aesthetic_model_16 = torch.nn.Linear(512, 1).cuda()
-aesthetic_model_16.load_state_dict(torch.load(f"{model_path}/ava_vit_b_16_linear.pth"))
-
-aesthetic_model_32 = torch.nn.Linear(512, 1).cuda()
-aesthetic_model_32.load_state_dict(
-    torch.load(f"{model_path}/sa_0_4_vit_b_32_linear.pth")
-)
+majesty.load_aesthetic_model()
 
 clip_load_list = []
 # @markdown #### Open AI CLIP models
@@ -181,10 +164,6 @@ from mmc.modalities import TEXT, IMAGE
 temp_perceptor = MultiMMC(TEXT, IMAGE)
 
 mmc_models = majesty.get_mmc_models(clip_load_list)
-
-normalize = transforms.Normalize(
-    mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711]
-)
 
 majesty.full_clip_load(clip_load_list)
 
@@ -280,6 +259,7 @@ majesty.opt.uc = majesty.latent_negatives
 majesty.set_custom_schedules()
 
 majesty.config_clip_guidance()
+majesty.config_output_size()
 majesty.config_options()
 
 torch.cuda.empty_cache()

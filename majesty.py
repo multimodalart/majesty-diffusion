@@ -154,6 +154,10 @@ init_scale = 1000
 init_brightness = 0.0
 init_noise = 0.6
 
+normalize = transforms.Normalize(
+    mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711]
+)
+
 
 def download_models():
     # download models as needed
@@ -650,9 +654,6 @@ def make_schedule(t_start, t_end, step_size=1):
     return np.array(schedule)
 
 
-lpips_model = lpips.LPIPS(net="vgg").to(device)
-
-
 def list_mul_to_array(list_mul):
     i = 0
     mul_count = 0
@@ -804,6 +805,33 @@ def full_clip_load(clip_load_list):
     return clip_model, clip_size, clip_tokenize, clip_normalize, clip_list
 
 
+# Alstro's aesthetic model
+def load_aesthetic_model():
+    aesthetic_model_336 = torch.nn.Linear(768, 1).cuda()
+    aesthetic_model_336.load_state_dict(
+        torch.load(f"{model_path}/ava_vit_l_14_336_linear.pth")
+    )
+
+    aesthetic_model_224 = torch.nn.Linear(768, 1).cuda()
+    aesthetic_model_224.load_state_dict(
+        torch.load(f"{model_path}/ava_vit_l_14_linear.pth")
+    )
+
+    aesthetic_model_16 = torch.nn.Linear(512, 1).cuda()
+    aesthetic_model_16.load_state_dict(
+        torch.load(f"{model_path}/ava_vit_b_16_linear.pth")
+    )
+
+    aesthetic_model_32 = torch.nn.Linear(512, 1).cuda()
+    aesthetic_model_32.load_state_dict(
+        torch.load(f"{model_path}/sa_0_4_vit_b_32_linear.pth")
+    )
+
+
+def load_lpips_model():
+    lpips_model = lpips.LPIPS(net="vgg").to(device)
+
+
 def config_init_image():
     if (
         ((init_image is not None) and (init_image != "None") and (init_image != ""))
@@ -835,6 +863,7 @@ def config_output_size():
 
 
 def config_options():
+    aes_scale = aesthetic_loss_scale
     opt.mag_mul = opt_mag_mul
     opt.ddim_eta = opt_ddim_eta
     opt.eta_end = opt_eta_end
@@ -843,7 +872,6 @@ def config_options():
     opt.n_samples = n_samples
     opt.scale = latent_diffusion_guidance_scale
     aug = augment_cuts
-    aes_scale = aesthetic_loss_scale
 
 
 def do_run():

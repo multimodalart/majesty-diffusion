@@ -190,7 +190,6 @@ clamp_start_, clamp_max = None, None
 clip_guidance_schedule = None
 prompts = []
 last_step_uspcale_list = []
-p: Popen[bytes] = []
 
 
 def download_models():

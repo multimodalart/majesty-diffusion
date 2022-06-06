@@ -180,7 +180,7 @@ aesthetic_model_336, aesthetic_model_224, aesthetic_model_16, aesthetic_model_32
 )
 custom_schedules = []
 
-global progress, image_grid, writer, img_tensor, im
+progress, image_grid, writer, img_tensor, im = {}, {}, {}, {}, {}
 
 
 def download_models():
@@ -975,7 +975,7 @@ def do_run():
             stdin=PIPE,
         )
     #  with torch.cuda.amp.autocast():
-    global progress, target_embeds, weights, zero_embed, init, scale_factor
+    global progress, target_embeds, weights, zero_embed, init, scale_factor, image_grid
     scale_factor = 1
     make_cutouts = {}
     for i in clip_list:

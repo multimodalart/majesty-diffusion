@@ -9,7 +9,6 @@ WORKDIR /src
 RUN git clone https://github.com/multimodalart/latent-diffusion
 RUN git clone https://github.com/CompVis/taming-transformers
 RUN git clone https://github.com/TencentARC/GFPGAN
-RUN git clone https://github.com/multimodalart/majesty-diffusion
 RUN git lfs clone https://github.com/LAION-AI/aesthetic-predictor
 
 RUN pip install -e ./taming-transformers

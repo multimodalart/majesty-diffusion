@@ -189,6 +189,7 @@ scale_factor = 1
 clamp_start_, clamp_max = None, None
 clip_guidance_schedule = None
 prompts = []
+mmc_models = []
 last_step_uspcale_list = []
 
 
@@ -821,7 +822,7 @@ def load_clip_models(mmc_models):
 
 
 def full_clip_load():
-    global clip_model, clip_size, clip_tokenize, clip_normalize, clip_list, clip_load_list
+    global clip_model, clip_size, clip_tokenize, clip_normalize, clip_list, clip_load_list, mmc_models
     torch.cuda.empty_cache()
     gc.collect()
     mmc_models = get_mmc_models(clip_load_list)

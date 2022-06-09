@@ -3,22 +3,23 @@
 #### Formerly known as Princess Generator
 Majesty Diffusion are implementations of text-to-image diffusion models with a royal touch 👸
 
-Access our [Majestic Guide](https://multimodal.art/majesty-diffusion) (_under construction_), join our community on [Discord](https://discord.gg/yNBtQBEDfZ) or reach out via [@multimodalart on Twitter](https://twitter.com/multimodalart)). Share your settings sending PRs to the settings libraries!
+Access our [Majestic Guide](https://multimodal.art/majesty-diffusion) (_under construction_), join our community on [Discord](https://discord.gg/yNBtQBEDfZ) or reach out via [@multimodalart on Twitter](https://twitter.com/multimodalart)). Also [share your settings with us](https://huggingface.co/datasets/multimodalart/latent-majesty-diffusion-settings)
 
 <img src="https://user-images.githubusercontent.com/788417/169711951-1ea0d0e6-2581-474a-b79f-e62b3fd8c3dd.png" width="30%"></img> <img src="https://user-images.githubusercontent.com/788417/169711813-804ebfa2-d9ee-4dd6-bdbf-8cb0b211d45c.png" width="30%"></img> <img src="https://user-images.githubusercontent.com/788417/169711793-6ac0fb54-ca06-490b-8fb2-10a3edc507ab.png" width="30%"></img> <img src="https://user-images.githubusercontent.com/788417/169712054-fe3bf4bd-4473-4070-ba69-0f74f5c3e475.png" width="30%"></img> <img src="https://user-images.githubusercontent.com/788417/169711818-474fa21d-e20d-4ee9-8ebd-333ac964b333.png" width="30%"></img> <img src="https://user-images.githubusercontent.com/788417/169711832-96456604-25b2-4cc0-8a5c-26bcd56e3993.png" width="30%"></img> 
 
 
 Current implementations:
-- [Latent Majesty Diffusion](#latent-majesty-diffusion-v12)
+- [Latent Majesty Diffusion](#latent-majesty-diffusion-v15)
 - [V-Majesty Diffusion](#v-majesty-diffusion-v12)
 
 
-## Latent Majesty Diffusion v1.4
+## Latent Majesty Diffusion v1.5
 ##### Formerly known as Latent Princess Generator
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/multimodalart/MajestyDiffusion/blob/main/latent.ipynb)
 
-A [Dango233](https://github.com/Dango233) and [apolinario (@multimodalart)](https://github.com/multimodalart) Colab notebook implementing [CompVis](https://github.com/CompVis)' Latent Diffusion, with the following changes:
+A [Dango233](https://github.com/Dango233) and [apolinario (@multimodalart)](https://github.com/multimodalart) Colab notebook implementing [CompVis](https://github.com/CompVis)' Latent Diffusion. [Contribute to our settings library on Hugging Face!](https://huggingface.co/datasets/multimodalart/latent-majesty-diffusion-settings)
 v1.2
+<details>
   - Added [Dango233](https://github.com/Dango233) CLIP Guidance
   - Added [Dango233](https://github.com/Dango233) magical **new** step and upscaling scheduling
   - Added [Dango233](https://github.com/Dango233) cuts, augs and attributes scheduling
@@ -32,13 +33,26 @@ v1.2
   - Added [LAION-AI](https://github.com/LAION-AI/aesthetic-predictor) aesthetic predictor embeddings
   - Added [Dango233](https://github.com/Dango233) inpainting mode
   - Added [apolinario (@multimodalart)](https://github.com/multimodalart) savable settings and setting library (including `colab-free-default`, `dango233-princesses`, `the-other-zippy` and `makaitrad` shared settings. Share yours with us too with a pull request!
+</details>
 v1.3
+<detals>
   - Better Upscaler (learn how to use it on our [Majestic Guide](https://multimodal.art/majesty-diffusion))
-v1.4
+</details>
+v1.4 and 1.5 (released together)
+<details open>
+ v1.4
  - Added [Dango233](https://github.com/Dango233) Customised Dynamic Thresholding
  - Added [open_clip](https://github.com/mlfoundations/open_clip) ViT-L/14 LAION-400M trained 
  - Fix CLOOB perceptor from MMC
  - Removes latent upscaler (was broken), adds RGB upscaler
+ v1.5
+ - Even better defaults
+ - Better dynamic thresholidng
+ - Improves range scale
+ - Adds var scale and mean scale
+ - Adds the possibility of blurring cuts
+ - Adds experimental compression and punishment settings
+</details>
 
 ## V-Majesty Diffusion v1.2
 ##### Formerly known as Princess Generator ver. Victoria
@@ -60,13 +74,13 @@ A [Dango233](https://github.com/Dango233) and [apolinario (@multimodalart)](http
 
 ## TODO
 ### Please feel free to help us in any of these tasks!
-  - [ ] Figure out better defaults and add more settings to the settings library (contribute with a PR!)
+  - [x] Figure out better defaults and add more settings to the settings library (contribute with a PR!)
   - [ ] Add all notebooks to a single pipeline where on model can be the output of the other (similar to [Centipede Diffusion](https://github.com/Zalring/Centipede_Diffusion))
   - [ ] Add all notebooks to the [MindsEye UI](multimodal.art/mindseye)
   - [ ] Modularise everything
   - [ ] Create a command line version
   - [ ] Add an inpainting UI
-  - [ ] Improve performance, both in speed and VRAM consumption
+  - [x] Improve performance, both in speed and VRAM consumption
   - [ ] More technical issues will be listed on [https://github.com/multimodalart/majesty-diffusion/issues](issues)
 
 ## Acknowledgments

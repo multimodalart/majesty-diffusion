@@ -18,8 +18,8 @@ Current implementations:
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/multimodalart/MajestyDiffusion/blob/main/latent.ipynb)
 
 A [Dango233](https://github.com/Dango233) and [apolinario (@multimodalart)](https://github.com/multimodalart) Colab notebook implementing [CompVis](https://github.com/CompVis)' Latent Diffusion. [Contribute to our settings library on Hugging Face!](https://huggingface.co/datasets/multimodalart/latent-majesty-diffusion-settings)
-v1.2
 <details>
+  <summary>v1.2</summary>
   - Added [Dango233](https://github.com/Dango233) CLIP Guidance
   - Added [Dango233](https://github.com/Dango233) magical **new** step and upscaling scheduling
   - Added [Dango233](https://github.com/Dango233) cuts, augs and attributes scheduling
@@ -34,12 +34,12 @@ v1.2
   - Added [Dango233](https://github.com/Dango233) inpainting mode
   - Added [apolinario (@multimodalart)](https://github.com/multimodalart) savable settings and setting library (including `colab-free-default`, `dango233-princesses`, `the-other-zippy` and `makaitrad` shared settings. Share yours with us too with a pull request!
 </details>
-v1.3
-<detals>
+<details>
+  <summary>v1.3</summary>
   - Better Upscaler (learn how to use it on our [Majestic Guide](https://multimodal.art/majesty-diffusion))
 </details>
-v1.4 and 1.5 (released together)
 <details open>
+<summary>v1.4 & 1.5</summary>
  v1.4
  - Added [Dango233](https://github.com/Dango233) Customised Dynamic Thresholding
  - Added [open_clip](https://github.com/mlfoundations/open_clip) ViT-L/14 LAION-400M trained 

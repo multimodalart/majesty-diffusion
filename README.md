@@ -39,7 +39,7 @@ A [Dango233](https://github.com/Dango233) and [apolinario (@multimodalart)](http
   - Better Upscaler (learn how to use it on our [Majestic Guide](https://multimodal.art/majesty-diffusion))
 </details>
 <details open>
-<summary>v1.4 & 1.5</summary>
+<summary>v1.4 & 1.5 & 1.6</summary>
  v1.4
  - Added [Dango233](https://github.com/Dango233) Customised Dynamic Thresholding
  - Added [open_clip](https://github.com/mlfoundations/open_clip) ViT-L/14 LAION-400M trained 
@@ -52,6 +52,13 @@ A [Dango233](https://github.com/Dango233) and [apolinario (@multimodalart)](http
  - Adds var scale and mean scale
  - Adds the possibility of blurring cuts
  - Adds experimental compression and punishment settings
+ - Adds PLMS support (experimental, results perceptually weird)
+ v1.6
+ - Adds [LAION](https://github.com/LAION-AI/ldm-finetune) `ongo` (finetuned in artworks) and `erlich` (finetuned for making logos) models
+ - Adds noising and scaling during the advanced schedulign phases
+ - Adds ViT-L conditioning downstream to the Latent Diffusion unet process
+ - Small tweaks on dynamic thresholding
+ - Fixes linear ETA 
 </details>
 
 ## V-Majesty Diffusion v1.2

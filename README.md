@@ -13,7 +13,7 @@ Current implementations:
 - [V-Majesty Diffusion](#v-majesty-diffusion-v12)
 
 
-## Latent Majesty Diffusion v1.5
+## Latent Majesty Diffusion v1.6
 ##### Formerly known as Latent Princess Generator
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/multimodalart/MajestyDiffusion/blob/main/latent.ipynb)
 

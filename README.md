@@ -9,7 +9,7 @@ Access our [Majestic Guide](https://multimodal.art/majesty-diffusion) (_under co
 
 
 Current implementations:
-- [Latent Majesty Diffusion](#latent-majesty-diffusion-v15)
+- [Latent Majesty Diffusion](#latent-majesty-diffusion-v16)
 - [V-Majesty Diffusion](#v-majesty-diffusion-v12)
 
 
@@ -20,6 +20,7 @@ Current implementations:
 A [Dango233](https://github.com/Dango233) and [apolinario (@multimodalart)](https://github.com/multimodalart) Colab notebook implementing [CompVis](https://github.com/CompVis)' Latent Diffusion. [Contribute to our settings library on Hugging Face!](https://huggingface.co/datasets/multimodalart/latent-majesty-diffusion-settings)
 <details>
   <summary>v1.2</summary>
+  
   - Added [Dango233](https://github.com/Dango233) CLIP Guidance
   - Added [Dango233](https://github.com/Dango233) magical **new** step and upscaling scheduling
   - Added [Dango233](https://github.com/Dango233) cuts, augs and attributes scheduling
@@ -40,20 +41,24 @@ A [Dango233](https://github.com/Dango233) and [apolinario (@multimodalart)](http
 </details>
 <details open>
 <summary>v1.4 & 1.5 & 1.6</summary>
+  
  v1.4
  - Added [Dango233](https://github.com/Dango233) Customised Dynamic Thresholding
- - Added [open_clip](https://github.com/mlfoundations/open_clip) ViT-L/14 LAION-400M trained 
+ - Added [open_clip](https://github.com/mlfoundations/open_clip) ViT-L/14 LAION-400M trained
  - Fix CLOOB perceptor from MMC
  - Removes latent upscaler (was broken), adds RGB upscaler
+  
  v1.5
- - Even better defaults
+ 
+  - Even better defaults
  - Better dynamic thresholidng
  - Improves range scale
  - Adds var scale and mean scale
  - Adds the possibility of blurring cuts
  - Adds experimental compression and punishment settings
  - Adds PLMS support (experimental, results perceptually weird)
- v1.6
+ 
+  v1.6
  - Adds [LAION](https://github.com/LAION-AI/ldm-finetune) `ongo` (finetuned in artworks) and `erlich` (finetuned for making logos) models
  - Adds noising and scaling during the advanced schedulign phases
  - Adds ViT-L conditioning downstream to the Latent Diffusion unet process
